@@ -5,38 +5,39 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Claude 完全指南 — 从入门到精通</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   /* ═══════════════════════════════════════════
-     ROOT — "Midnight Galaxy" × "Editorial Tech"
+     ROOT — "Cosmic Editorial" refined theme
      ═══════════════════════════════════════════ */
   :root {
-    --bg-deep: #08090e;
-    --bg: #0d0f17;
-    --bg-elevated: #141722;
-    --bg-card: #1a1e2e;
-    --bg-card-hover: #212639;
-    --border: #252a3e;
-    --border-subtle: #1e2335;
+    --bg-deep: #06070c;
+    --bg: #0a0c15;
+    --bg-elevated: #0f111d;
+    --bg-card: #131626;
+    --bg-card-hover: #191d33;
+    --border: #1e2240;
+    --border-subtle: #171b30;
 
-    --text: #e2e4f0;
-    --text-dim: #8a8fa8;
-    --text-bright: #f0f2ff;
-    --text-muted: #5a5f7a;
+    --text: #d8dae8;
+    --text-dim: #8186a8;
+    --text-bright: #eeeff8;
+    --text-muted: #555b7e;
 
-    --accent: #7c6df0;
-    --accent-glow: rgba(124,109,240,.25);
-    --accent2: #4dd9c8;
-    --accent2-dim: rgba(77,217,200,.15);
-    --accent3: #f4a6c8;
-    --amber: #f0c96d;
-    --rose: #f07080;
+    --accent: #8180f2;
+    --accent-glow: rgba(129,128,242,.22);
+    --accent2: #3dd9c0;
+    --accent2-dim: rgba(61,217,192,.12);
+    --accent3: #f2a0be;
+    --amber: #eec468;
+    --rose: #ee6e7e;
 
-    --gradient-hero: linear-gradient(135deg, #0d0f17 0%, #141722 40%, #1a1e2e 100%);
-    --gradient-accent: linear-gradient(135deg, #7c6df0, #4dd9c8);
-    --gradient-warm: linear-gradient(135deg, #f4a6c8, #f0c96d);
+    --gradient-hero: linear-gradient(165deg, #080a12 0%, #0f111d 35%, #131626 70%, #0d0f1c 100%);
+    --gradient-accent: linear-gradient(135deg, #8180f2, #3dd9c0);
+    --gradient-warm: linear-gradient(135deg, #f2a0be, #eec468);
+    --gradient-subtle: linear-gradient(180deg, rgba(129,128,242,.04) 0%, rgba(61,217,192,.03) 100%);
 
-    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-display: 'Playfair Display', 'DM Serif Display', Georgia, serif;
     --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
 
@@ -45,15 +46,17 @@
     --radius-lg: 16px;
     --radius-xl: 20px;
 
-    --shadow-card: 0 2px 20px rgba(0,0,0,.4);
-    --shadow-glow: 0 0 40px rgba(124,109,240,.12);
+    --shadow-card: 0 1px 24px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.02);
+    --shadow-glow: 0 0 60px rgba(129,128,242,.1), 0 0 120px rgba(61,217,192,.04);
+    --shadow-elevated: 0 4px 40px rgba(0,0,0,.5);
 
-    --transition: .35s cubic-bezier(.22,1,.36,1);
+    --transition: .4s cubic-bezier(.22,1,.36,1);
+    --transition-fast: .2s cubic-bezier(.22,1,.36,1);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; background: var(--bg-deep); }
 
   body {
     font-family: var(--font-body);
@@ -62,12 +65,21 @@
     line-height: 1.7;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    position: relative;
+  }
+
+  /* grain overlay for atmosphere */
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+    opacity: .035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   ::selection { background: var(--accent); color: #fff; }
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: var(--bg-deep); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
   /* ═══════════════════════════════════════════
@@ -75,11 +87,11 @@
      ═══════════════════════════════════════════ */
   .nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-    background: rgba(8,9,14,.85);
-    backdrop-filter: blur(16px) saturate(1.4);
-    -webkit-backdrop-filter: blur(16px) saturate(1.4);
-    border-bottom: 1px solid var(--border-subtle);
-    padding: 0 28px;
+    background: rgba(6,7,12,.82);
+    backdrop-filter: blur(20px) saturate(1.6);
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+    border-bottom: 1px solid rgba(255,255,255,.04);
+    padding: 0 32px;
     height: 56px;
     display: flex;
     align-items: center;
@@ -87,31 +99,39 @@
   }
   .nav-logo {
     font-weight: 800;
-    font-size: 1.05rem;
+    font-size: 1rem;
     color: var(--text-bright);
     letter-spacing: -.02em;
   }
-  .nav-logo span { color: var(--accent2); }
-  .nav-links { display: flex; gap: 4px; }
+  .nav-logo span {
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .nav-links { display: flex; gap: 2px; }
   .nav-links a {
     color: var(--text-dim);
     text-decoration: none;
-    font-size: .8rem;
+    font-size: .78rem;
     font-weight: 500;
-    padding: 6px 12px;
-    border-radius: var(--radius-sm);
-    transition: all var(--transition);
+    padding: 6px 14px;
+    border-radius: 8px;
+    transition: all var(--transition-fast);
+    position: relative;
   }
-  .nav-links a:hover { color: var(--text-bright); background: rgba(255,255,255,.04); }
+  .nav-links a:hover { color: var(--text-bright); background: rgba(255,255,255,.05); }
   .nav-progress {
-    position: absolute; bottom: -1px; left: 0; right: 0; height: 1px;
-    background: var(--border-subtle);
+    position: absolute; bottom: 0; left: 0; right: 0; height: 1.5px;
+    background: rgba(255,255,255,.03);
   }
   .nav-progress-fill {
     height: 100%;
     background: var(--gradient-accent);
     width: 0%;
     transition: width .3s ease;
+    border-radius: 0 1px 1px 0;
+    box-shadow: 0 0 8px rgba(129,128,242,.5);
   }
 
   @media (max-width: 720px) {
@@ -123,51 +143,60 @@
      HERO
      ═══════════════════════════════════════════ */
   .hero {
-    padding: 120px 28px 80px;
-    background: var(--gradient-hero);
+    padding: 140px 28px 100px;
     position: relative;
     overflow: hidden;
     text-align: center;
+    isolation: isolate;
   }
   .hero::before {
     content: '';
-    position: absolute;
-    top: -40%; left: -20%;
-    width: 140%; height: 160%;
+    position: absolute; inset: 0; z-index: 0;
     background:
-      radial-gradient(ellipse 600px 400px at 20% 60%, rgba(124,109,240,.10) 0%, transparent 70%),
-      radial-gradient(ellipse 500px 300px at 80% 40%, rgba(77,217,200,.06) 0%, transparent 70%),
-      radial-gradient(ellipse 300px 200px at 50% 80%, rgba(244,166,200,.04) 0%, transparent 70%);
+      radial-gradient(ellipse 700px 500px at 15% 50%, rgba(129,128,242,.09) 0%, transparent 65%),
+      radial-gradient(ellipse 550px 350px at 85% 30%, rgba(61,217,192,.06) 0%, transparent 65%),
+      radial-gradient(ellipse 350px 250px at 50% 90%, rgba(242,160,190,.04) 0%, transparent 65%),
+      radial-gradient(ellipse 400px 200px at 50% 0%, rgba(129,128,242,.04) 0%, transparent 70%);
     pointer-events: none;
   }
-  .hero > * { position: relative; z-index: 1; }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 120px;
+    background: linear-gradient(to top, var(--bg-deep), transparent);
+    pointer-events: none; z-index: 1;
+  }
+  .hero > * { position: relative; z-index: 2; }
 
   .hero-badge {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: var(--accent-glow);
-    border: 1px solid rgba(124,109,240,.2);
-    padding: 5px 14px;
+    background: rgba(129,128,242,.1);
+    border: 1px solid rgba(129,128,242,.18);
+    padding: 6px 16px;
     border-radius: 100px;
     font-size: .75rem;
     font-weight: 600;
     color: var(--accent2);
-    letter-spacing: .03em;
-    margin-bottom: 24px;
+    letter-spacing: .04em;
+    margin-bottom: 28px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 
   .hero h1 {
     font-family: var(--font-display);
-    font-size: clamp(2.6rem, 6vw, 4.4rem);
-    font-weight: 400;
+    font-size: clamp(2.8rem, 6.5vw, 4.8rem);
+    font-weight: 500;
     color: var(--text-bright);
-    line-height: 1.15;
-    margin-bottom: 16px;
+    line-height: 1.1;
+    margin-bottom: 20px;
     letter-spacing: -.02em;
   }
   .hero h1 em {
     font-style: italic;
+    font-weight: 500;
     background: var(--gradient-accent);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -177,9 +206,9 @@
   .hero p {
     font-size: 1.1rem;
     color: var(--text-dim);
-    max-width: 600px;
-    margin: 0 auto 36px;
-    line-height: 1.6;
+    max-width: 620px;
+    margin: 0 auto 40px;
+    line-height: 1.65;
   }
 
   .hero-actions {
@@ -187,55 +216,62 @@
     justify-content: center;
     gap: 12px;
     flex-wrap: wrap;
-    margin-bottom: 48px;
+    margin-bottom: 56px;
   }
   .hero-actions a {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 12px 28px;
+    padding: 13px 32px;
     border-radius: 100px;
-    font-size: .9rem;
+    font-size: .88rem;
     font-weight: 600;
     text-decoration: none;
     transition: all var(--transition);
+    position: relative;
   }
   .hero-actions a:first-child {
     background: var(--gradient-accent);
     color: #08090e;
-    box-shadow: 0 4px 24px rgba(124,109,240,.3);
+    box-shadow: 0 4px 28px rgba(129,128,242,.3);
   }
-  .hero-actions a:first-child:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124,109,240,.4); }
+  .hero-actions a:first-child:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(129,128,242,.45); }
   .hero-actions a:last-child {
-    background: rgba(255,255,255,.04);
+    background: rgba(255,255,255,.03);
     color: var(--text);
     border: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
-  .hero-actions a:last-child:hover { background: rgba(255,255,255,.08); }
+  .hero-actions a:last-child:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.08); }
 
   .hero-stats {
     display: flex;
     justify-content: center;
-    gap: 48px;
+    gap: 56px;
     flex-wrap: wrap;
   }
   .hero-stats div { text-align: center; }
   .hero-stats strong {
     display: block;
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--text-bright);
-    letter-spacing: -.02em;
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 600;
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
   }
   .hero-stats span {
-    font-size: .8rem;
+    font-size: .78rem;
     color: var(--text-muted);
     font-weight: 500;
   }
 
   @media (max-width: 640px) {
-    .hero { padding: 100px 16px 60px; }
-    .hero-stats { gap: 24px; }
+    .hero { padding: 110px 16px 70px; }
+    .hero-stats { gap: 28px; }
   }
 
   /* ═══════════════════════════════════════════
@@ -244,45 +280,48 @@
   .toc {
     max-width: 820px;
     margin: 0 auto;
-    padding: 40px 28px 0;
+    padding: 32px 28px 0;
+    position: relative; z-index: 2;
   }
   .toc-inner {
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     padding: 28px 32px;
+    box-shadow: var(--shadow-card);
   }
   .toc h2 {
     font-family: var(--font-display);
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     color: var(--text-bright);
-    font-weight: 400;
-    margin-bottom: 16px;
+    font-weight: 500;
+    margin-bottom: 18px;
+    letter-spacing: -.01em;
   }
   .toc-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 4px;
+    gap: 2px;
   }
   .toc-grid a {
     color: var(--text-dim);
     text-decoration: none;
     font-size: .88rem;
-    padding: 6px 8px;
-    border-radius: var(--radius-sm);
-    transition: all var(--transition);
+    padding: 8px 10px;
+    border-radius: 8px;
+    transition: all var(--transition-fast);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
   }
   .toc-grid a:hover { color: var(--text-bright); background: rgba(255,255,255,.03); }
   .toc-grid .toc-num {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 20px; height: 20px;
-    border-radius: 4px;
-    font-size: .7rem;
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    font-size: .72rem;
     font-weight: 700;
     flex-shrink: 0;
   }
@@ -290,48 +329,58 @@
   /* ═══════════════════════════════════════════
      MAIN CONTENT
      ═══════════════════════════════════════════ */
-  .app { max-width: 860px; margin: 0 auto; padding: 48px 28px 100px; }
+  .app { max-width: 860px; margin: 0 auto; padding: 52px 28px 120px; }
 
   /* ─── Chapter ─── */
   .chapter {
-    margin-bottom: 48px;
+    margin-bottom: 64px;
     opacity: 0;
     transform: translateY(24px);
-    animation: chapterIn .6s ease forwards;
+    animation: chapterIn .7s cubic-bezier(.22,1,.36,1) forwards;
   }
   @keyframes chapterIn { to { opacity: 1; transform: translateY(0); } }
 
   .chapter-header {
     display: flex;
     align-items: center;
-    gap: 16px;
-    margin-bottom: 24px;
-    padding-bottom: 16px;
+    gap: 18px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
     border-bottom: 1px solid var(--border-subtle);
+    position: relative;
+  }
+  .chapter-header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0;
+    width: 48px; height: 2px;
+    background: var(--gradient-accent);
+    border-radius: 1px;
   }
   .chapter-num {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px; height: 40px;
+    width: 44px; height: 44px;
     border-radius: var(--radius);
     font-size: .85rem;
     font-weight: 800;
     flex-shrink: 0;
     letter-spacing: -.02em;
+    box-shadow: 0 4px 16px rgba(0,0,0,.3);
   }
   .chapter-header h2 {
     font-family: var(--font-display);
-    font-size: 1.6rem;
-    font-weight: 400;
+    font-size: 1.7rem;
+    font-weight: 500;
     color: var(--text-bright);
     letter-spacing: -.01em;
   }
   .chapter-header .ch-sub {
-    font-size: .82rem;
+    font-size: .84rem;
     color: var(--text-muted);
     font-weight: 500;
-    margin-top: 2px;
+    margin-top: 3px;
   }
 
   /* ─── Section Card ─── */
@@ -339,60 +388,73 @@
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    padding: 28px 32px;
-    margin-bottom: 16px;
+    padding: 28px 34px;
+    margin-bottom: 14px;
     transition: all var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+  .section-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.03), transparent);
+    opacity: 0;
+    transition: opacity var(--transition);
   }
   .section-card:hover {
-    border-color: rgba(124,109,240,.15);
+    border-color: rgba(129,128,242,.12);
     box-shadow: var(--shadow-glow);
+    transform: translateY(-1px);
   }
+  .section-card:hover::before { opacity: 1; }
   .section-card:last-child { margin-bottom: 0; }
 
   .section-card h3 {
     font-size: 1.1rem;
     font-weight: 700;
     color: var(--text-bright);
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
     gap: 10px;
   }
-  .section-card h3 .icon { font-size: 1.15rem; }
+  .section-card h3 .icon { font-size: 1.2rem; }
   .section-card p, .section-card li {
-    font-size: .92rem;
+    font-size: .925rem;
     color: var(--text);
-    line-height: 1.75;
+    line-height: 1.78;
     margin-bottom: 6px;
   }
   .section-card p:last-child { margin-bottom: 0; }
-  .section-card ul, .section-card ol { padding-left: 20px; margin: 6px 0 10px; }
-  .section-card li { margin-bottom: 3px; }
-  .section-card strong { color: var(--text-bright); }
+  .section-card ul, .section-card ol { padding-left: 22px; margin: 6px 0 10px; }
+  .section-card li { margin-bottom: 4px; }
+  .section-card strong { color: var(--text-bright); font-weight: 600; }
   .section-card code {
     font-family: var(--font-mono);
     font-size: .82rem;
-    background: rgba(124,109,240,.1);
-    color: var(--accent-light, #b8adff);
-    padding: 1px 6px;
-    border-radius: 4px;
+    background: rgba(129,128,242,.12);
+    color: #b8b4f8;
+    padding: 2px 7px;
+    border-radius: 5px;
   }
 
   /* ─── Command Grid ─── */
   .cmd-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 10px;
+    gap: 8px;
     margin: 10px 0;
   }
   .cmd-item {
-    background: rgba(255,255,255,.02);
+    background: rgba(255,255,255,.015);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius);
-    padding: 14px 16px;
-    transition: all var(--transition);
+    padding: 14px 18px;
+    transition: all var(--transition-fast);
+    position: relative;
   }
-  .cmd-item:hover { border-color: rgba(124,109,240,.2); background: rgba(124,109,240,.04); }
+  .cmd-item:hover { border-color: rgba(129,128,242,.18); background: rgba(129,128,242,.03); }
   .cmd-item .cmd {
     font-family: var(--font-mono);
     font-size: .82rem;
@@ -402,29 +464,29 @@
   .cmd-item .cmd-desc {
     font-size: .82rem;
     color: var(--text-dim);
-    margin-top: 2px;
+    margin-top: 3px;
   }
 
   /* ─── Example Box ─── */
   .example {
     border-radius: var(--radius);
-    padding: 16px 18px;
-    margin: 12px 0;
+    padding: 18px 22px;
+    margin: 14px 0;
     font-size: .88rem;
-    line-height: 1.65;
+    line-height: 1.7;
     border-left: 3px solid var(--accent);
-    background: rgba(124,109,240,.06);
+    background: rgba(129,128,242,.05);
   }
   .example.good {
     border-left-color: var(--accent2);
     background: var(--accent2-dim);
   }
   .example .label {
-    font-size: .72rem;
+    font-size: .7rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: .05em;
-    margin-bottom: 4px;
+    letter-spacing: .06em;
+    margin-bottom: 6px;
     color: var(--accent);
   }
   .example.good .label { color: var(--accent2); }
@@ -433,14 +495,15 @@
   .tip {
     display: flex;
     gap: 12px;
-    background: rgba(240,201,109,.06);
-    border: 1px solid rgba(240,201,109,.15);
+    background: rgba(238,196,104,.05);
+    border: 1px solid rgba(238,196,104,.12);
     border-radius: var(--radius);
-    padding: 14px 18px;
-    margin: 12px 0;
+    padding: 16px 20px;
+    margin: 14px 0;
     font-size: .88rem;
+    line-height: 1.6;
   }
-  .tip .tip-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+  .tip .tip-icon { font-size: 1.15rem; flex-shrink: 0; margin-top: 1px; }
   .tip strong { color: var(--amber); }
 
   /* ─── Tag ─── */
@@ -448,40 +511,41 @@
     display: inline-block;
     font-size: .68rem;
     font-weight: 600;
-    padding: 2px 10px;
+    padding: 3px 12px;
     border-radius: 100px;
     letter-spacing: .02em;
   }
-  .tag.claude-ai { background: rgba(124,109,240,.15); color: #b8adff; }
-  .tag.claude-code { background: rgba(77,217,200,.12); color: var(--accent2); }
-  .tag.both { background: rgba(240,201,109,.12); color: var(--amber); }
+  .tag.claude-ai { background: rgba(129,128,242,.15); color: #b8b4f8; }
+  .tag.claude-code { background: rgba(61,217,192,.12); color: var(--accent2); }
+  .tag.both { background: rgba(238,196,104,.12); color: var(--amber); }
 
   /* ─── Key Value ─── */
   .kv-list { margin: 8px 0; }
   .kv-row {
     display: flex;
     align-items: baseline;
-    gap: 8px;
-    padding: 4px 0;
+    gap: 10px;
+    padding: 5px 0;
     font-size: .88rem;
-    border-bottom: 1px solid rgba(255,255,255,.03);
+    border-bottom: 1px solid rgba(255,255,255,.025);
   }
   .kv-row:last-child { border-bottom: none; }
   .kv-key {
     font-family: var(--font-mono);
     font-size: .8rem;
     color: var(--accent2);
-    min-width: 100px;
+    min-width: 110px;
     font-weight: 500;
+    flex-shrink: 0;
   }
   .kv-val { color: var(--text); }
 
   /* ─── Template Box ─── */
   .tmpl {
-    background: rgba(124,109,240,.04);
-    border: 1px dashed rgba(124,109,240,.25);
+    background: rgba(129,128,242,.04);
+    border: 1px dashed rgba(129,128,242,.22);
     border-radius: var(--radius);
-    padding: 16px 18px;
+    padding: 18px 22px;
     margin: 10px 0;
     font-family: var(--font-mono);
     font-size: .8rem;
@@ -492,13 +556,13 @@
   }
 
   /* ─── Model Table ─── */
-  .table-wrap { overflow-x: auto; margin: 12px 0; border-radius: var(--radius); border: 1px solid var(--border); }
+  .table-wrap { overflow-x: auto; margin: 14px 0; border-radius: var(--radius); border: 1px solid var(--border); }
   table { width: 100%; border-collapse: collapse; font-size: .85rem; }
-  th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-subtle); }
-  th { background: rgba(124,109,240,.08); color: var(--accent2); font-weight: 600; font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; }
+  th, td { padding: 11px 16px; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+  th { background: rgba(129,128,242,.06); color: var(--accent2); font-weight: 600; font-size: .74rem; text-transform: uppercase; letter-spacing: .05em; }
   tr:last-child td { border-bottom: none; }
   td { color: var(--text); }
-  tr:hover td { background: rgba(255,255,255,.015); }
+  tr:hover td { background: rgba(255,255,255,.012); }
 
   /* ─── Principle Grid ─── */
   .principle-grid {
@@ -511,35 +575,35 @@
     background: rgba(255,255,255,.015);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius);
-    padding: 16px 18px;
-    transition: all var(--transition);
+    padding: 18px 20px;
+    transition: all var(--transition-fast);
   }
-  .principle-card:hover { border-color: rgba(124,109,240,.2); transform: translateY(-1px); }
+  .principle-card:hover { border-color: rgba(129,128,242,.18); transform: translateY(-2px); box-shadow: var(--shadow-glow); }
   .principle-card .num {
     display: inline-flex;
     align-items: center; justify-content: center;
-    width: 24px; height: 24px;
+    width: 26px; height: 26px;
     border-radius: 100px;
     background: var(--gradient-accent);
     color: #08090e;
     font-size: .72rem;
     font-weight: 800;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
   .principle-card h4 { color: var(--text-bright); font-size: .95rem; margin-bottom: 4px; }
   .principle-card p { font-size: .82rem; color: var(--text-dim); line-height: 1.5; }
 
   /* ─── Workflow ─── */
-  .workflow { margin: 12px 0; padding-left: 24px; border-left: 2px solid var(--accent); }
+  .workflow { margin: 14px 0; padding-left: 28px; border-left: 2px solid var(--accent); }
   .wf-step {
-    padding: 10px 0 10px 16px;
+    padding: 10px 0 10px 18px;
     position: relative;
   }
   .wf-step::before {
     content: attr(data-step);
     position: absolute;
-    left: -32px; top: 10px;
-    width: 22px; height: 22px;
+    left: -36px; top: 10px;
+    width: 24px; height: 24px;
     border-radius: 100px;
     background: var(--accent);
     color: #08090e;
@@ -562,26 +626,41 @@
     background: rgba(255,255,255,.015);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius);
-    padding: 14px 16px;
+    padding: 16px 18px;
     text-align: center;
-    transition: all var(--transition);
+    transition: all var(--transition-fast);
   }
-  .day-card:hover { border-color: rgba(124,109,240,.2); }
-  .day-card .day { font-size: .72rem; color: var(--accent2); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
-  .day-card h4 { color: var(--text-bright); font-size: .9rem; margin: 2px 0; }
+  .day-card:hover { border-color: rgba(129,128,242,.18); transform: translateY(-2px); }
+  .day-card .day { font-size: .7rem; color: var(--accent2); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+  .day-card h4 { color: var(--text-bright); font-size: .9rem; margin: 3px 0; }
   .day-card p { font-size: .78rem; color: var(--text-dim); margin: 0; line-height: 1.4; }
 
   /* ─── Responsive ─── */
-  @media (max-width: 640px) {
-    .app { padding: 32px 16px 80px; }
-    .section-card { padding: 20px 18px; }
-    .chapter-header h2 { font-size: 1.3rem; }
+  @media (max-width: 768px) {
+    .app { padding: 36px 20px 80px; }
+    .section-card { padding: 22px 20px; }
+    .chapter-header h2 { font-size: 1.4rem; }
+    .chapter-header .ch-sub { font-size: .78rem; }
+    .chapter-num { width: 36px; height: 36px; font-size: .78rem; }
     .toc { padding: 24px 16px 0; }
-    .toc-inner { padding: 20px 18px; }
+    .toc-inner { padding: 20px 20px; }
     .toc-grid { grid-template-columns: 1fr; }
     .cmd-grid { grid-template-columns: 1fr; }
     .principle-grid { grid-template-columns: 1fr 1fr; }
     .day-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    .app { padding: 28px 14px 64px; }
+    .section-card { padding: 18px 16px; border-radius: var(--radius); }
+    .chapter-header { gap: 12px; }
+    .chapter-header h2 { font-size: 1.25rem; }
+    .principle-grid { grid-template-columns: 1fr; }
+    .day-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 2.2rem; }
+    .hero p { font-size: .95rem; }
+    .hero-stats { gap: 20px; }
+    .hero-stats strong { font-size: 1.6rem; }
   }
 </style>
 </head>
@@ -613,8 +692,8 @@
   </div>
   <div class="hero-stats">
     <div><strong>7</strong><span>章节</span></div>
-    <div><strong>30+</strong><span>实用技巧</span></div>
-    <div><strong>20+</strong><span>指令详解</span></div>
+    <div><strong>50+</strong><span>实用章节</span></div>
+    <div><strong>30+</strong><span>指令详解</span></div>
     <div><strong>7天</strong><span>学习路径</span></div>
   </div>
 </header>
@@ -662,6 +741,24 @@
     </div>
 
     <div class="section-card">
+      <h3><span class="icon">📜</span> Claude 发展简史</h3>
+      <p>Claude 由 <strong>Anthropic</strong> 于 2023 年发布，公司由前 OpenAI 研究负责人 Dario Amodei 创立，核心理念是打造<strong>安全、对齐、有用</strong>的 AI 系统。</p>
+      <div class="table-wrap">
+      <table>
+        <tr><th>时间</th><th>里程碑</th></tr>
+        <tr><td><strong>2023.03</strong></td><td>Claude 1 发布，首次展示 Constitutional AI 训练方法</td></tr>
+        <tr><td><strong>2023.07</strong></td><td>Claude 2 发布，支持 100K 上下文窗口，引入文件上传</td></tr>
+        <tr><td><strong>2024.03</strong></td><td>Claude 3 系列（Haiku/Sonnet/Opus）发布，多模态能力上线</td></tr>
+        <tr><td><strong>2024.10</strong></td><td>Claude 3.5 Sonnet 发布，引入 Artifacts 功能，编程能力大幅提升</td></tr>
+        <tr><td><strong>2025.05</strong></td><td>Claude Code CLI 正式发布，面向开发者的终端 AI 助手</td></tr>
+        <tr><td><strong>2025.10</strong></td><td>Claude 4 系列（Haiku/Sonnet/Opus）发布，推理能力再次飞跃</td></tr>
+        <tr><td><strong>2026.02</strong></td><td>Claude Code v2.0 发布，引入多 Agent 协作、原生二进制安装</td></tr>
+      </table>
+      </div>
+      <div class="tip"><span class="tip-icon">💡</span><div><strong>关键趋势：</strong>Claude 的演进方向是更长的上下文、更强的推理、更深的工具集成。从纯聊天到能直接操作文件系统的编程助手，只用了不到两年。</div></div>
+    </div>
+
+    <div class="section-card">
       <h3><span class="icon">🔄</span> Claude.ai vs Claude Code</h3>
       <p>Claude 有两种主要使用形态，适用不同场景：</p>
       <div class="table-wrap">
@@ -679,6 +776,20 @@
     </div>
 
     <div class="section-card">
+      <h3><span class="icon">💰</span> 定价与方案</h3>
+      <div class="table-wrap">
+      <table>
+        <tr><th>方案</th><th>价格</th><th>适用人群</th><th>核心权益</th></tr>
+        <tr><td><strong>Free</strong></td><td>免费</td><td>体验用户</td><td>有限对话次数，Haiku 模型，基本功能</td></tr>
+        <tr><td><strong>Pro</strong></td><td>$20/月</td><td>专业用户</td><td>Opus/Sonnet/Haiku 全模型，Projects，Artifacts，200K 上下文</td></tr>
+        <tr><td><strong>Team</strong></td><td>$25/人/月</td><td>小团队</td><td>Pro 全部 + 共享 Projects，更高用量上限，管理面板</td></tr>
+        <tr><td><strong>Enterprise</strong></td><td>定制报价</td><td>大型组织</td><td>Team 全部 + SSO，审计日志，数据控制，优先支持</td></tr>
+      </table>
+      </div>
+      <p>Claude Code 需要<strong>Pro 及以上订阅</strong>，API 使用按 token 计费（详见第 4 章 Token 经济）。</p>
+    </div>
+
+    <div class="section-card">
       <h3><span class="icon">🧠</span> 可用模型一览</h3>
       <div class="table-wrap">
       <table>
@@ -688,6 +799,22 @@
         <tr><td><strong>Claude Haiku 4</strong></td><td>极速响应</td><td>简单问答、翻译、分类</td></tr>
       </table>
       </div>
+    </div>
+  </div>
+
+    <div class="section-card">
+      <h3><span class="icon">⚖️</span> 与其他 AI 助手对比</h3>
+      <div class="table-wrap">
+      <table>
+        <tr><th>维度</th><th>Claude</th><th>ChatGPT</th><th>Gemini</th></tr>
+        <tr><td><strong>核心优势</strong></td><td>深度推理、长文本、安全性</td><td>多功能、插件生态、普及度</td><td>Google 生态集成、多模态</td></tr>
+        <tr><td><strong>上下文窗口</strong></td><td>最高 200K tokens</td><td>128K tokens</td><td>最高 2M tokens</td></tr>
+        <tr><td><strong>代码能力</strong></td><td>Claude Code 原生终端集成</td><td>Code Interpreter + GPT Actions</td><td>Gemini Code Assist</td></tr>
+        <tr><td><strong>适合场景</strong></td><td>深度分析、长文档、安全敏感</td><td>创意发散、插件自动化、学习</td><td>Google 用户、多模态搜索</td></tr>
+        <tr><td><strong>定价</strong></td><td>$20/月（Pro）</td><td>$20/月（Plus）</td><td>$19.99/月（Advanced）</td></tr>
+      </table>
+      </div>
+      <div class="tip"><span class="tip-icon">💡</span><div><strong>选型建议：</strong>重度编程用户选 Claude Code，创意写作和多功能场景选 ChatGPT，Google 生态深度用户选 Gemini。不需要站队，三个一起用的人也很多。</div></div>
     </div>
   </div>
 
@@ -702,9 +829,31 @@
     </div>
 
     <div class="section-card">
+      <h3><span class="icon">🖥️</span> 环境要求</h3>
+      <div class="table-wrap">
+      <table>
+        <tr><th>安装方式</th><th>前提条件</th><th>适用系统</th></tr>
+        <tr><td><strong>原生二进制（推荐）</strong></td><td>无需 Node.js，直接运行</td><td>macOS 12+, Linux x64/arm64, Windows 10+</td></tr>
+        <tr><td><strong>npm 全局安装</strong></td><td>Node.js 18+</td><td>所有支持 Node.js 的系统</td></tr>
+        <tr><td><strong>Homebrew</strong></td><td>macOS + Homebrew</td><td>macOS</td></tr>
+      </table>
+      </div>
+      <p>硬件方面无特殊要求，但建议<strong>4GB+ 可用内存</strong>以流畅运行。国内用户建议先配置 npm 镜像：</p>
+      <div class="tmpl">npm config set registry https://registry.npmmirror.com</div>
+    </div>
+
+    <div class="section-card">
       <h3><span class="icon">📦</span> 安装 Claude Code</h3>
-      <p>Claude Code 通过 npm 全局安装：</p>
+      <p><strong>方式一：原生二进制安装（2026 年推荐）</strong></p>
+      <div class="tmpl"># macOS / Linux / WSL
+curl -fsSL https://claude.ai/install.sh | bash
+
+# Windows PowerShell
+irm https://claude.ai/install.ps1 | iex</div>
+      <p><strong>方式二：npm 全局安装</strong></p>
       <div class="tmpl">npm install -g @anthropic-ai/claude-code</div>
+      <p><strong>方式三：macOS Homebrew</strong></p>
+      <div class="tmpl">brew install --cask claude-code</div>
       <p>安装完成后，验证版本：</p>
       <div class="tmpl">claude --version</div>
     </div>
@@ -748,6 +897,37 @@ claude</div>
     </div>
   </div>
 
+    <div class="section-card">
+      <h3><span class="icon">🔧</span> 多环境配置</h3>
+      <p>Claude Code 支持<strong>三级配置</strong>，优先级从高到低：</p>
+      <div class="kv-list">
+        <div class="kv-row"><span class="kv-key">项目本地</span><span class="kv-val"><code>.claude/settings.local.json</code> — 仅当前项目，不提交 Git（最高优先级）</span></div>
+        <div class="kv-row"><span class="kv-key">项目共享</span><span class="kv-val"><code>.claude/settings.json</code> — 当前项目，可提交 Git 与团队共享</span></div>
+        <div class="kv-row"><span class="kv-key">用户全局</span><span class="kv-val"><code>~/.claude/settings.json</code> — 所有项目通用（最低优先级）</span></div>
+      </div>
+      <div class="tip"><span class="tip-icon">💡</span><div><strong>常用做法：</strong>全局配置放个人偏好（主题、模型），项目共享配置放权限规则和 MCP 服务器，local 文件放敏感信息（API key 等）。</div></div>
+    </div>
+
+    <div class="section-card">
+      <h3><span class="icon">🩺</span> 常见问题排查</h3>
+      <div class="kv-list">
+        <div class="kv-row"><span class="kv-key">安装失败</span><span class="kv-val">检查 Node.js 版本 ≥ 18，或改用原生二进制安装绕过 Node 依赖</span></div>
+        <div class="kv-row"><span class="kv-key">登录超时</span><span class="kv-val">国内网络可能需代理；尝试 <code>claude login --browser</code> 手动打开浏览器</span></div>
+        <div class="kv-row"><span class="kv-key">权限错误</span><span class="kv-val">macOS/Linux 用 <code>sudo</code>；Windows 用管理员终端；或配置 npm 全局目录到用户目录</span></div>
+        <div class="kv-row"><span class="kv-key">命令找不到</span><span class="kv-val">确认 npm 全局 bin 目录在 PATH 中：<code>npm bin -g</code> 查看路径</span></div>
+        <div class="kv-row"><span class="kv-key">启动报错</span><span class="kv-val">删除 <code>.claude/</code> 目录重新初始化：<code>rm -rf .claude && claude</code></span></div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h3><span class="icon">🦞</span> 懒人通道：让 OpenClaw 代劳</h3>
+      <p>如果你已经装了 <strong>OpenClaw</strong>（那只叫"小龙虾"的 AI 助手），事情就简单多了：</p>
+      <p>直接对它说一句——<strong>"帮我把 Claude Code 装好，环境帮我配好，一步到位"</strong>——然后去冲杯咖啡。</p>
+      <p>OpenClaw 会自己检测系统、装依赖、跑配置、验证安装。毕竟，<em>让一个 AI 去装另一个 AI，才是 2026 年的正确打开方式</em>。</p>
+      <div class="tip"><span class="tip-icon">🦞</span><div><strong>当然：</strong>如果你还没装 OpenClaw……那就老老实实看上面的安装步骤吧。或者，先装个 OpenClaw，再让它帮你装 Claude Code？禁止套娃，但确实可行。</div></div>
+    </div>
+  </div>
+
   <!-- ════════════════ CHAPTER 3 ════════════════ -->
   <div class="chapter" id="ch3">
     <div class="chapter-header">
@@ -773,6 +953,22 @@ claude</div>
     </div>
 
     <div class="section-card">
+      <h3><span class="icon">⚙️</span> Claude.ai 设置与偏好</h3>
+      <p>点击左下角头像进入设置，可以调整以下内容：</p>
+      <ul>
+        <li><strong>主题切换</strong> — 浅色 / 深色 / 跟随系统，深色更适合长时间使用</li>
+        <li><strong>语言偏好</strong> — Claude 会自动匹配你的语言，也可手动指定回复语言</li>
+        <li><strong>数据控制</strong> — 选择是否将对话用于模型改进（Pro/Team 默认不用于训练）</li>
+        <li><strong>自定义指令</strong> — 设置全局偏好，Claude 会在每次对话中自动遵循</li>
+        <li><strong>通知偏好</strong> — 管理邮件通知和产品更新推送</li>
+      </ul>
+      <div class="example good">
+        <div class="label">✅ 推荐的自定义指令</div>
+        用中文回复。回答简洁，先给结论再展开。不确定的地方明确说"不确定"，不要猜测。代码示例优先使用 TypeScript。
+      </div>
+    </div>
+
+    <div class="section-card">
       <h3><span class="icon">💻</span> Claude Code 界面导览</h3>
       <p>Claude Code 运行在终端中，界面分为几个区域：</p>
       <ul>
@@ -783,6 +979,19 @@ claude</div>
         <li><strong>进度指示</strong> — Claude 在执行工具调用时显示实时进度</li>
       </ul>
       <div class="tip"><span class="tip-icon">⌨️</span><div><strong>快捷键：</strong> <code>Ctrl+C</code> 中断当前响应，<code>Ctrl+L</code> 清屏，<code>↑</code> 调出上一条指令</div></div>
+    </div>
+
+    <div class="section-card">
+      <h3><span class="icon">🔍</span> Claude Code Diff 视图详解</h3>
+      <p>当 Claude Code 修改文件时，会展示<strong>行级 diff 视图</strong>，你可以逐块审核：</p>
+      <ul>
+        <li><strong>绿色块（+）</strong> — 新增的代码行</li>
+        <li><strong>红色块（-）</strong> — 被删除的代码行</li>
+        <li><strong>逐块操作</strong> — 每个变更块可以独立 <code>Accept</code> / <code>Reject</code></li>
+        <li><strong>手动编辑</strong> — 接受后可继续手动调整，Claude 会感知你的修改</li>
+        <li><strong>批量操作</strong> — 支持一键接受全部或拒绝全部变更</li>
+      </ul>
+      <div class="tip"><span class="tip-icon">💡</span><div><strong>小技巧：</strong>不放心 Claude 的修改？先 Reject 再看它解释原因，往往能从中学到新思路。</div></div>
     </div>
 
     <div class="section-card">
@@ -800,6 +1009,19 @@ claude</div>
 ├── src/
 └── ...</div>
       <p><strong>CLAUDE.md</strong> 是 Claude Code 最重要的配置文件。它告诉 Claude 你的项目背景、技术栈、编码规范和常用命令。一个好的 CLAUDE.md 可以大幅提升 Claude 在项目中的表现。</p>
+    </div>
+
+    <div class="section-card">
+      <h3><span class="icon">🎨</span> Artifacts 交互指南</h3>
+      <p>Artifacts 是 Claude.ai 独有的功能，让对话产出从纯文本升级为<strong>可视化可交付物</strong>：</p>
+      <ul>
+        <li><strong>触发方式</strong> — 当 Claude 生成代码、图表、长文档时自动创建，也可明确要求"用 Artifact 展示"</li>
+        <li><strong>预览与迭代</strong> — Artifact 右侧实时渲染，你可以继续对话让 Claude 修改，所见即所得</li>
+        <li><strong>分享</strong> — 点击"发布"生成公开链接，团队成员无需登录即可查看</li>
+        <li><strong>导出</strong> — 支持复制源码、下载 HTML 文件，或直接在浏览器中打开</li>
+        <li><strong>版本回溯</strong> — 每次迭代自动保存版本，随时回到之前的版本</li>
+      </ul>
+      <div class="tip"><span class="tip-icon">💡</span><div><strong>实用场景：</strong>"用 Artifact 画个流程图"、"生成一个数据看板"、"写个交互式原型"——总之，想让 Claude 产出可展示的内容时，就说"用 Artifact 展示"。</div></div>
     </div>
   </div>
 
@@ -823,6 +1045,19 @@ claude</div>
         <li><strong>跨会话记忆</strong> — Claude Code 支持将关键信息持久化到 <code>.claude/memory/</code>，跨对话读取</li>
       </ul>
       <div class="tip"><span class="tip-icon">💡</span><div><strong>最佳实践：</strong> 关键上下文（项目背景、当前任务）放在对话开头或 CLAUDE.md 中，不要依赖对话中间的信息</div></div>
+    </div>
+
+    <div class="section-card">
+      <h3><span class="icon">📊</span> Token 经济与成本管理</h3>
+      <p>理解 Token 是高效使用 Claude 的关键：</p>
+      <ul>
+        <li><strong>Token 是什么</strong> — Claude 处理文本的最小单位，1 个中文字 ≈ 2~3 tokens，1 个英文单词 ≈ 1~2 tokens</li>
+        <li><strong>计费范围</strong> — 输入 token（你的 prompt + 上下文文件）+ 输出 token（Claude 的回复）都计费</li>
+        <li><strong>模型差异</strong> — Opus 最贵但最强，Haiku 最便宜但能力有限，Sonnet 是大多数场景的最佳性价比选择</li>
+        <li><strong>Claude.ai 订阅</strong> — Pro 订阅固定月费，用量上限内不限 token；达到上限后降级到低优先级</li>
+        <li><strong>API 按量付费</strong> — Claude Code 通过 API 使用时按实际 token 消耗计费</li>
+      </ul>
+      <div class="tip"><span class="tip-icon">💰</span><div><strong>省钱技巧：</strong>日常对话用 Sonnet，复杂任务切 Opus；不要无意义地重复上传同一份文件；长对话适时用 <code>/clear</code> 重置上下文。</div></div>
     </div>
 
     <div class="section-card">
@@ -866,6 +1101,43 @@ claude</div>
     </div>
   </div>
 
+    <div class="section-card">
+      <h3><span class="icon">🛡️</span> 权限系统详解</h3>
+      <p>Claude Code 的权限分为三级，你可以在 <code>settings.json</code> 中精细控制：</p>
+      <div class="table-wrap">
+      <table>
+        <tr><th>级别</th><th>行为</th><th>适合场景</th></tr>
+        <tr><td><strong>allow</strong></td><td>自动放行，不弹确认框</td><td>低风险操作（Read、WebSearch）</td></tr>
+        <tr><td><strong>ask（默认）</strong></td><td>每次弹出确认框</td><td>中等风险（Edit、Write、Bash 非敏感命令）</td></tr>
+        <tr><td><strong>deny</strong></td><td>直接拒绝，不询问</td><td>高风险操作（rm -rf、sudo、curl 未知 URL）</td></tr>
+      </table>
+      </div>
+      <p>可以按<strong>工具类型</strong>或<strong>命令模式</strong>配置权限：</p>
+      <div class="tmpl">{
+  "permissions": {
+    "allow": ["Read", "WebSearch", "WebFetch"],
+    "deny": ["Bash(rm -rf *)", "Bash(sudo *)"]
+  }
+}</div>
+      <div class="tip"><span class="tip-icon">⚠️</span><div><strong>安全第一：</strong>不要完全放开 Bash 权限。用 deny 规则阻止危险命令模式（如 <code>rm -rf</code>、<code>curl | bash</code>），这是最后一道防线。</div></div>
+    </div>
+
+    <div class="section-card">
+      <h3><span class="icon">📋</span> CLAUDE.md 最佳实践</h3>
+      <p>一个好的 <code>CLAUDE.md</code> 能让 Claude Code 变成你项目的"老员工"：</p>
+      <div class="example good">
+        <div class="label">✅ CLAUDE.md 推荐结构</div>
+        <strong>1. 项目概述：</strong>一句话说清项目是什么、给谁用<br>
+        <strong>2. 技术栈：</strong>语言、框架、数据库、关键依赖<br>
+        <strong>3. 目录结构：</strong>主要目录的用途说明<br>
+        <strong>4. 编码规范：</strong>命名规则、文件组织、测试要求<br>
+        <strong>5. 常用命令：</strong>构建、测试、部署的终端命令<br>
+        <strong>6. 注意事项：</strong>坑点、约定、特殊逻辑说明
+      </div>
+      <div class="tip"><span class="tip-icon">💡</span><div><strong>团队技巧：</strong>把 CLAUDE.md 提交到 Git，新成员 clone 项目后 Claude 就能立刻理解项目上下文。可比新员工 on-boarding 文档管用多了。</div></div>
+    </div>
+  </div>
+
   <!-- ════════════════ CHAPTER 5 ════════════════ -->
   <div class="chapter" id="ch5">
     <div class="chapter-header">
@@ -904,6 +1176,36 @@ claude</div>
     </div>
 
     <div class="section-card">
+      <h3><span class="icon">⚡</span> Bash 命令速查</h3>
+      <p>在 Claude Code 对话中，你可以直接让 Claude 执行这些操作：</p>
+      <div class="cmd-grid">
+        <div class="cmd-item"><div class="cmd">npm install &lt;包名&gt;</div><div class="cmd-desc">安装项目依赖</div></div>
+        <div class="cmd-item"><div class="cmd">npm test</div><div class="cmd-desc">运行测试套件</div></div>
+        <div class="cmd-item"><div class="cmd">git status</div><div class="cmd-desc">查看文件变更状态</div></div>
+        <div class="cmd-item"><div class="cmd">git log --oneline</div><div class="cmd-desc">查看最近提交历史</div></div>
+        <div class="cmd-item"><div class="cmd">ls -la &lt;目录&gt;</div><div class="cmd-desc">浏览目录结构</div></div>
+        <div class="cmd-item"><div class="cmd">grep -r "关键词" .</div><div class="cmd-desc">全局搜索代码内容</div></div>
+        <div class="cmd-item"><div class="cmd">find . -name "*.ts"</div><div class="cmd-desc">按文件名模式搜索</div></div>
+        <div class="cmd-item"><div class="cmd">cat &lt;文件&gt;</div><div class="cmd-desc">查看文件内容</div></div>
+      </div>
+      <div class="tip"><span class="tip-icon">💡</span><div><strong>省事技巧：</strong>不需要自己敲这些命令。直接用中文告诉 Claude "帮我查下项目里有哪些 ts 文件引用了这个函数"，它会自己找到正确的命令执行。</div></div>
+    </div>
+
+    <div class="section-card">
+      <h3><span class="icon">🔀</span> Git 工作流指令</h3>
+      <p>Claude Code 原生感知 Git，这些高频操作可以直接对话完成：</p>
+      <div class="cmd-grid">
+        <div class="cmd-item"><div class="cmd">"帮我提个 commit"</div><div class="cmd-desc">分析变更、生成 commit message、提交</div></div>
+        <div class="cmd-item"><div class="cmd">"review 一下改动"</div><div class="cmd-desc">审查当前所有未提交的变更</div></div>
+        <div class="cmd-item"><div class="cmd">"创建 PR"</div><div class="cmd-desc">自动生成 PR 标题和描述，推送到远程</div></div>
+        <div class="cmd-item"><div class="cmd">"看看最近的提交"</div><div class="cmd-desc">展示 git log 并总结变更要点</div></div>
+        <div class="cmd-item"><div class="cmd">"切到新分支"</div><div class="cmd-desc">创建并切换到功能分支</div></div>
+        <div class="cmd-item"><div class="cmd">"rebase 到 main"</div><div class="cmd-desc">拉取最新 main 并 rebase 当前分支</div></div>
+      </div>
+      <div class="tip"><span class="tip-icon">⚠️</span><div><strong>注意：</strong>涉及 force push、rebase 等高风险 Git 操作时，Claude 会默认向你确认。永远不要在 main/master 分支上做这些操作。</div></div>
+    </div>
+
+    <div class="section-card">
       <h3><span class="icon">📝</span> 常用提示词模板</h3>
       <p>这些模板覆盖了最常见的 Claude 使用场景，可以直接复制使用：</p>
 
@@ -913,6 +1215,16 @@ claude</div>
       <div class="tmpl">【学习】请用由浅入深的方式教我[概念]。直觉 → 例子 → 原理 → 练习题</div>
       <div class="tmpl">【方案】请制定可执行方案。包含：目标 · 步骤 · 资源 · 时间 · 风险 · 指标</div>
       <div class="tmpl">【审查】请检查逻辑漏洞、表达不清、事实不充分、结构混乱的问题</div>
+
+      <p style="margin-top:16px;"><strong>按角色分类：</strong></p>
+      <div class="cmd-grid">
+        <div class="cmd-item"><div class="cmd">👨‍💻 开发者</div><div class="cmd-desc">"重构这个函数，拆成更小的单元，每个函数只做一件事。加上类型标注和边界检查。"</div></div>
+        <div class="cmd-item"><div class="cmd">📊 产品经理</div><div class="cmd-desc">"分析这个需求的用户价值、开发成本、潜在风险。按 RICE 框架打分，给一个 go/no-go 建议。"</div></div>
+        <div class="cmd-item"><div class="cmd">✍️ 写作者</div><div class="cmd-desc">"作为编辑来读这篇文章。指出：论点不清的地方、论据薄弱的地方、可删的废话、能加分的例子。"</div></div>
+        <div class="cmd-item"><div class="cmd">🎓 学生</div><div class="cmd-desc">"用苏格拉底式提问教我[概念]。不要直接给答案，问引导性问题让我自己想明白。"</div></div>
+        <div class="cmd-item"><div class="cmd">🔬 研究员</div><div class="cmd-desc">"对这篇论文做同行评审式分析：方法合理性、数据充分性、结论是否有夸大、后续研究方向。"</div></div>
+        <div class="cmd-item"><div class="cmd">📈 创业者</div><div class="cmd-desc">"模拟 3 种最坏情况质问这个商业计划。每种情况说明原因、概率、应对方案。"</div></div>
+      </div>
     </div>
   </div>
 
@@ -945,6 +1257,32 @@ claude</div>
         <strong>要求：</strong>1200 字，风格正式但不空泛，避免套话<br>
         <strong>格式：</strong>工作概览 → 重点成果 → 问题 → 改进 → 明年目标
       </div>
+    </div>
+
+    <div class="section-card">
+      <h3><span class="icon">🎭</span> 角色设定法</h3>
+      <p>给 Claude 一个明确角色，输出质量会明显不同。不是简单说"你是专家"，而是定义<strong>身份 + 视角 + 标准</strong>：</p>
+      <div class="example good">
+        <div class="label">✅ 高效角色设定</div>
+        "你是一个有 15 年经验的前端架构师，擅长 React 和 TypeScript。现在帮我 review 这段代码，重点检查：性能隐患、可维护性问题、类型安全漏洞。每个问题附上修改建议和优先级。"
+      </div>
+      <p>角色设定的三个要素：</p>
+      <ul>
+        <li><strong>身份</strong> — 谁在说话？（资深工程师 / 编辑 / 产品经理 / 投资人）</li>
+        <li><strong>视角</strong> — 从什么角度看问题？（技术审查 / 用户体验 / 商业风险）</li>
+        <li><strong>标准</strong> — 用什么尺度判断？（行业最佳实践 / 具体指标 / 给定标准）</li>
+      </ul>
+    </div>
+
+    <div class="section-card">
+      <h3><span class="icon">🧠</span> 思维链提示</h3>
+      <p>让 Claude <strong>展示推理过程</strong>而非直接给结论，能显著提升复杂问题的准确性：</p>
+      <div class="example good">
+        <div class="label">✅ 思维链示范</div>
+        <strong>普通问法：</strong>"这个 Bug 怎么修？"<br>
+        <strong>思维链问法：</strong>"逐步分析这个 Bug：1）复现条件是什么？2）可能的原因有哪些？3）逐一排除最不可能的 4）给出修复方案并解释为什么这是根因而非症状。"
+      </div>
+      <p>适用场景：调试、逻辑推理、决策分析、数学问题、代码审查。核心技巧是加一句 <strong>"先思考，再回答"</strong>或<strong>"展示你的推理过程"</strong>。</p>
     </div>
 
     <div class="section-card">
@@ -981,6 +1319,32 @@ claude</div>
     </div>
 
     <div class="section-card">
+      <h3><span class="icon">🔁</span> 迭代优化法</h3>
+      <p>不要期望一次对话就得到完美结果。把 Claude 当协作伙伴，<strong>多轮对话逐步打磨</strong>：</p>
+      <div class="workflow">
+        <div class="wf-step" data-step="1"><h4>起步</h4><p>给粗略方向，让 Claude 提问澄清需求</p></div>
+        <div class="wf-step" data-step="2"><h4>出框架</h4><p>确认结构和方向后再填充</p></div>
+        <div class="wf-step" data-step="3"><h4>打磨</h4><p>"第三段更展开一些"、"换个例子"、"语气太正式了"</p></div>
+        <div class="wf-step" data-step="4"><h4>审视</h4><p>"从这个角度看有什么问题？"、"哪个论点最容易被反驳？"</p></div>
+        <div class="wf-step" data-step="5"><h4>收尾</h4><p>"最后通读一遍，检查逻辑连贯性和格式一致性"</p></div>
+      </div>
+      <p>关键心态：<strong>别把 Claude 当许愿机，当它是坐在你旁边的聪明同事。</strong></p>
+    </div>
+
+    <div class="section-card">
+      <h3><span class="icon">🏗️</span> 上下文设计策略</h3>
+      <p>好的上下文设计是高质量输出的前提：</p>
+      <ul>
+        <li><strong>信息前置</strong> — 最重要的信息放在对话开头，不要埋在中间（会被压缩丢失）</li>
+        <li><strong>分层结构</strong> — 用"背景 → 任务 → 材料 → 要求 → 格式"的结构组织输入</li>
+        <li><strong>关键约束高亮</strong> — 用 <strong>**粗体**</strong> 或单独一行标注硬性限制（"不能超过 500 字"、"必须包含数据来源"）</li>
+        <li><strong>及时重置</strong> — 话题转换时用 <code>/clear</code> 清空旧上下文，避免 Claude 被之前的对话带偏</li>
+        <li><strong>善用文件</strong> — 长资料不要全贴到对话里，用文件上传或放在项目目录让 Claude 自己读</li>
+      </ul>
+      <div class="tip"><span class="tip-icon">💡</span><div><strong>一句话原则：</strong>想象你只能给 Claude 一页纸的上下文——你会把什么写在最上面？那就是你应该最先说的。</div></div>
+    </div>
+
+    <div class="section-card">
       <h3><span class="icon">🚫</span> 常见误区</h3>
       <ol>
         <li><strong>当搜索引擎用</strong> — 实时数据、政策、价格仍需核验</li>
@@ -1014,6 +1378,18 @@ claude</div>
         原文证据不足时请明确指出，不要过度延伸。
       </div>
       <p>一个好的项目上下文能让你每次对话都从最佳状态开始，不需要重复说明。</p>
+    </div>
+
+    <div class="section-card">
+      <h3><span class="icon">👥</span> 团队协作配置</h3>
+      <p>Claude Code 可以成为团队的共享基础设施：</p>
+      <ul>
+        <li><strong>CLAUDE.md 入 Git</strong> — 将项目级的 CLAUDE.md 提交到仓库，全团队共享项目上下文和编码规范</li>
+        <li><strong>共享 Skills 库</strong> — 把团队常用的工作流（代码审查、部署检查、测试生成）写成 Skill，放在 <code>.claude/skills/</code> 入 Git</li>
+        <li><strong>统一 MCP 配置</strong> — 在项目 settings.json 中配置团队共用 MCP 服务器（如 GitHub、Jira、数据库），新成员 clone 即用</li>
+        <li><strong>共享 Memory</strong> — 将关键的团队规范、架构决策记录写入 <code>.claude/memory/</code></li>
+      </ul>
+      <div class="tip"><span class="tip-icon">💡</span><div><strong>经验之谈：</strong>一个好的 CLAUDE.md 比大多数团队 wiki 都管用。新同事第一天 clone 项目，Claude 就能比 TA 更懂项目结构。</div></div>
     </div>
 
     <div class="section-card">
@@ -1059,6 +1435,21 @@ description: 生成周报的 Skill
     </div>
 
     <div class="section-card">
+      <h3><span class="icon">🚀</span> CI/CD 集成</h3>
+      <p>Claude Code 可以嵌入自动化流水线中，实现 AI 驱动的开发流程：</p>
+      <ul>
+        <li><strong>自动代码审查</strong> — PR 创建时自动触发 Claude Code review，在人工审查前先过滤低级问题</li>
+        <li><strong>提交信息生成</strong> — pre-commit hook 中调用 Claude 分析 diff 并生成规范的 commit message</li>
+        <li><strong>文档自动更新</strong> — 代码合并后自动更新 API 文档和变更日志</li>
+        <li><strong>测试补充</strong> — 代码变更后自动检测未覆盖的路径并生成测试建议</li>
+      </ul>
+      <div class="tmpl"># GitHub Actions 示例：PR 自动 Review
+- name: Claude Code Review
+  run: claude review --pr ${{ github.event.pull_request.number }}</div>
+      <div class="tip"><span class="tip-icon">⚠️</span><div><strong>注意：</strong>CI 中的 Claude 应设为自动模式（非交互），且对高风险操作（merge、deploy）仍需人工确认。自动审查是辅助，不是替代。</div></div>
+    </div>
+
+    <div class="section-card">
       <h3><span class="icon">🗓️</span> 7 天学习路径</h3>
       <p>每天一个真实任务，逐步把 Claude 融入工作流：</p>
       <div class="day-grid">
@@ -1084,6 +1475,34 @@ description: 生成周报的 Skill
       </div>
     </div>
   </div>
+
+    <div class="section-card">
+      <h3><span class="icon">📖</span> 真实场景案例</h3>
+
+      <div class="example good">
+        <div class="label">案例 1：用 Claude Code 重构遗留项目</div>
+        <strong>背景：</strong>一个 3 年未维护的 Node.js 后台服务，无类型、无测试、文档过时。<br>
+        <strong>过程：</strong><br>
+        1. 让 Claude 扫描项目结构，生成项目概览和模块依赖图<br>
+        2. 逐步将核心模块迁移到 TypeScript，每次一个模块<br>
+        3. Claude 为每个重构后的模块生成单元测试<br>
+        4. 重构完成后，Claude 生成完整的 API 文档和架构说明<br>
+        <strong>结果：</strong>原本估计 2 周的工作，4 天完成。类型覆盖率从 0 到 95%，测试覆盖率到 80%。
+      </div>
+
+      <div class="example good" style="margin-top:12px;">
+        <div class="label">案例 2：用 Claude.ai 撰写行业研究报告</div>
+        <strong>背景：</strong>产品经理需要一份 5000 字的竞品分析报告，3 天内完成。<br>
+        <strong>过程：</strong><br>
+        1. 上传 5 份竞品公开资料作为 Project 上下文<br>
+        2. 让 Claude 先出分析框架（市场格局 → 产品对比 → 优劣势 → 机会点）<br>
+        3. 确认框架后逐节撰写，每节审阅修改<br>
+        4. 最后让 Claude 从"对手视角"挑漏洞，补充薄弱环节<br>
+        5. 用 Artifact 生成对比表格和雷达图<br>
+        <strong>结果：</strong>从收集资料到终稿 2 天完成，报告被管理层评价为"最有说服力的一期"。
+      </div>
+      <div class="tip"><span class="tip-icon">💡</span><div><strong>共同点：</strong>两个案例都遵循同一模式——<strong>给背景 → 定框架 → 分步做 → 审视改进</strong>。好的 AI 协作不在于一次性指令多精妙，而在于交互流程设计得合理。</div></div>
+    </div>
 
   <!-- ════════════════ FOOTER ════════════════ -->
   <div class="chapter" style="margin-bottom:0;">
